@@ -1,12 +1,14 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 
-const submissionSchema = new mongoose.Schema({
-  uid: String,
-  pid: String,
-  verdict: String,
-  code: String,
-});
+const submissionSchema = new mongoose.Schema(
+  {
+    uid: { type: String, required: true },
+    pid: { type: String, required: true },
+    verdict: { type: String, default: "Pending" },
+    code: { type: String, required: true },
+  },
+  { timestamps: true }
+);
 
 const Submission = mongoose.model("Submission", submissionSchema);
 
