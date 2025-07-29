@@ -5,7 +5,7 @@ import {
   getUserSubmissions,
   getSubmissionByUser,
   getSubmissionsByProblem,
-} from "../controllers/submissionController.js";
+} from "../controllers/submission.controller.js";
 
 const router = Router();
 
@@ -13,7 +13,7 @@ router.route("/submit").post(verifyJWT, submitCode);
 
 router.route("/getall").get(getUserSubmissions);
 
-router.get("/getbyuser").post(verifyJWT, getSubmissionByUser);
+router.route("/getbyuser").post(verifyJWT, getSubmissionByUser);
 
 router.route("/getbyproblem").post(getSubmissionsByProblem);
 

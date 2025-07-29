@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
+import ProblemPage from "./pages/ProblemPage";
 import { useEffect } from "react";
 import axios from "axios";
 
@@ -14,7 +15,7 @@ function App() {
     if (localStorage.getItem("Token")) {
       console.log(localStorage.getItem("Token"));
       try {
-        const res = await axios.get(baseurl+"api/user/verify-token", {
+        const res = await axios.get(baseurl + "api/user/verify-token", {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("Token"),
           },
@@ -42,6 +43,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/homepage" element={<HomePage />} />
+          <Route path="/problem" element={<ProblemPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
