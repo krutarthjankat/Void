@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
-export default function SignupForm() {
+export default function SignupForm({ setUser }) {
   const [form, setForm] = useState({
     name: "",
     emailid: "",
@@ -54,7 +54,8 @@ export default function SignupForm() {
     try {
       const res = await axios.post(baseurl + "api/users/signup", form);
       if (res.data.status === "success") {
-        navigate(`/dashboard`);
+        setUser(res.data.data);
+        navigate(`/`);
       } else {
         control.start({
           scale: [15, 0],

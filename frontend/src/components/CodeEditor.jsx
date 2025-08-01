@@ -10,7 +10,7 @@ const languageMap = {
   java: "import java.util.*;\nclass Main {\n  public static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    int a = sc.nextInt();\n    System.out.println(a * 3);\n  }\n}",
 };
 
-const CodeEditor = () => {
+const CodeEditor = ({pid}) => {
   const [language, setLanguage] = useState("cpp");
   const [code, setCode] = useState(languageMap["cpp"]);
   const [input, setInput] = useState("5");
@@ -36,6 +36,33 @@ const CodeEditor = () => {
     }
   };
 
+  const handleSubmit = async () => {
+    setLoading(true);
+    setOutput("");
+    try {
+      const res = await axios.post(
+        baseurl + "api/submission/submit",
+        {
+          pid,
+          language,
+          code,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Token"),
+          },
+          withCredentials:true
+        }
+      );
+      setOutput(res.data.result || "Submission Successful!");
+    } catch (err) {
+      const msg = err.response?.data?.errors?.[0] || "Submission Failed!";
+      setOutput("Error:\n" + msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <motion.div
       className="w-full max-w-5xl mx-auto p-4 md:p-6 space-y-6 bg-white rounded-xl shadow-xl"
@@ -43,7 +70,7 @@ const CodeEditor = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Language Select + Run */}
+      {/* Language Select + Buttons */}
       <div className="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center">
         <div className="flex items-center gap-2 w-full md:w-auto">
           <label className="font-semibold text-sm">Select Language:</label>
@@ -62,14 +89,24 @@ const CodeEditor = () => {
           </select>
         </div>
 
-        <motion.button
-          onClick={handleRun}
-          whileTap={{ scale: 0.95 }}
-          whileHover={{ scale: 1.03 }}
-          className="bg-blue-600 text-white px-5 py-2 rounded-lg font-medium shadow hover:bg-blue-700 transition"
-        >
-          {loading ? "Running..." : "▶ Run Code"}
-        </motion.button>
+        <div className="flex gap-2">
+          <motion.button
+            onClick={handleRun}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700 transition"
+          >
+            {loading ? "Running..." : "▶ Run Code"}
+          </motion.button>
+          <motion.button
+            onClick={handleSubmit}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.03 }}
+            className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-green-700 transition"
+          >
+            {loading ? "Submitting..." : "✔ Submit"}
+          </motion.button>
+        </div>
       </div>
 
       {/* Code Editor */}

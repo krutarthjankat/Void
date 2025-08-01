@@ -3,27 +3,31 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import HomePage from "./pages/HomePage";
 import ProblemPage from "./pages/ProblemPage";
-import { useEffect } from "react";
+import MainLayout from "./components/MainLayout";
+import { useEffect, useState } from "react";
 import axios from "axios";
-
 import { ThemeProvider } from "./contexts/ThemeContext";
+import ProblemSection from "./components/ProblemSection";
 
 export const baseurl = "http://localhost:3000/";
 
 function App() {
+  const [user, setUser] = useState();
+
   const verifyUser = async () => {
     if (localStorage.getItem("Token")) {
-      console.log(localStorage.getItem("Token"));
       try {
-        const res = await axios.get(baseurl + "api/user/verify-token", {
+        const token = localStorage.getItem("Token");
+        console.log("Bearer " + token);
+        const res = await axios.get(baseurl + "api/user/verify_token", {
           headers: {
-            Authorization: "Bearer " + localStorage.getItem("Token"),
+            Authorization: "Bearer " + token,
           },
+          withCredentials: true,
         });
-
+        console.log(res.data);
+        setUser(res.data.data);
         if (res.data.statusCode === 200) {
-          console.log("halwa");
-          loginCtx.login(res.data.data.user);
           localStorage.setItem("Token", res.data.data.Token);
         }
       } catch (error) {
@@ -40,10 +44,16 @@ function App() {
     <ThemeProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/homepage" element={<HomePage />} />
-          <Route path="/problem" element={<ProblemPage />} />
+          {/* Routes without header/footer */}
+          <Route path="/login" element={<LoginPage setUser={setUser} />} />
+          <Route path="/signup" element={<SignupPage setUser={setUser} />} />
+
+          {/* Routes with header/footer */}
+          <Route element={<MainLayout user={user} setUser={setUser} />}>
+            <Route path="/" element={<ProblemSection />} />
+            <Route path="/problem" element={<ProblemSection />} />
+            <Route path="/problem/:id" element={<ProblemPage />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

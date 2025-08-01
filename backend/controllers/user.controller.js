@@ -145,19 +145,16 @@ const verifyToken = asyncHandler(async (req, res) => {
 
     const user = await User.findById(decodedRefreshToken.id);
 
-    // console.log(user.Token);
-
-    if (!user) {
+    if (!(user.name)) {
       throw new ApiError(401, "Invalid Token");
     }
-    // console.log("abcd")
+    console.log("abcd")
     const { Token: newToken } = await generateTokens(user._id);
     const loggeduser = await User.findById(decodedRefreshToken.id);
     const options = {
       // httpOnly : true,
       secure: true,
     };
-    console.log(newUser, newAccessToken, newRefreshToken);
     return res
       .status(200)
       .cookie("Token", newToken, options)

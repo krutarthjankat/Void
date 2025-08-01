@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 
-export default function LoginForm() {
+export default function LoginForm({ setUser }) {
   const [type, setType] = useState("password");
   const [userForm, setUserForm] = useState({
     uniqueId: "",
@@ -50,7 +50,8 @@ export default function LoginForm() {
       console.log(res.data);
       if (res.data?.statusCode === 200) {
         localStorage.setItem("Token", res.data.data.Token);
-        navigate(`/homepage`);
+        setUser(res.data.data);
+        navigate(`/`);
       }
     } catch (error) {
       console.log(error);
@@ -85,7 +86,7 @@ export default function LoginForm() {
               <div className="fixed top-5 right-5 rounded-md bg-white p-2">
                 <button
                   onClick={() => {
-                    navigate("/homepage");
+                    navigate("/");
                   }}
                 >
                   Back to Home Page!

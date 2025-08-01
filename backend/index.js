@@ -13,13 +13,17 @@ app.use(express.json());
 
 connectToDb();
 
-app.use(cors());
-
 const tempDir = path.join("temp");
 if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir);
 }
 
+app.use(
+  cors({
+    origin: "http://localhost:5173", 
+    credentials: true,
+  })
+);
 app.use("/api/user", userRoute);
 
 app.use("/api/problem", probRoute);
@@ -28,19 +32,19 @@ app.use("/api/submission", submissionRoute);
 
 app.use("/api/code", compileRouter);
 
-app.use((err, req, res, next) => {
-  if (err instanceof ApiError) {
-    return res.status(err.statusCode).json(err);
-  }
-  console.error("Unhandled error:", err); // 👈 log unexpected errors
-  return res.status(500).json({
-    statusCode: 500,
-    data: null,
-    message: "Internal Server Error",
-    success: false,
-    errors: [err?.message || String(err)],
-  });
-});
+// app.use((err, req, res, next) => {
+//   if (err instanceof ApiError) {
+//     return res.status(err.statusCode).json(err);
+//   }
+//   console.error("Unhandled error:", err); // 👈 log unexpected errors
+//   return res.status(500).json({
+//     statusCode: 500,
+//     data: null,
+//     message: "Internal Server Error",
+//     success: false,
+//     errors: [err?.message || String(err)],
+//   });
+// });
 
 app.get("/", (req, res) => {
   res.send("Sab badhiya");
