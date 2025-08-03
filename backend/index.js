@@ -2,6 +2,7 @@ import userRoute from "./routes/user.routes.js";
 import probRoute from "./routes/problem.routes.js";
 import submissionRoute from "./routes/submission.routes.js";
 import compileRouter from "./routes/compiler.route.js";
+import aiReviewRoutes from "./routes/aiReview.route.js";
 import { connectToDb } from "./database/connectToDb.js";
 import { ApiError } from "./utils/ApiError.js";
 import fs from "fs";
@@ -32,6 +33,8 @@ app.use("/api/submission", submissionRoute);
 
 app.use("/api/code", compileRouter);
 
+app.use("/api/ai", aiReviewRoutes);
+
 // app.use((err, req, res, next) => {
 //   if (err instanceof ApiError) {
 //     return res.status(err.statusCode).json(err);
@@ -45,6 +48,7 @@ app.use("/api/code", compileRouter);
 //     errors: [err?.message || String(err)],
 //   });
 // });
+
 
 app.get("/", (req, res) => {
   res.send("Sab badhiya");

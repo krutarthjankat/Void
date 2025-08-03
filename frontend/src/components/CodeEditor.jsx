@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { baseurl } from "../App.jsx";
 import { motion } from "framer-motion";
@@ -17,6 +17,12 @@ const CodeEditor = ({pid}) => {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    localStorage.setItem("latest_code", code);
+    localStorage.setItem("latest_lang", language);
+  }, [code, language]);
+
 
   const handleRun = async () => {
     setLoading(true);
