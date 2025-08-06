@@ -29,6 +29,7 @@ const generateTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, mobno, emailid, password } = req.body;
+  console.log(req.body);
   if ([name, mobno, emailid, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
@@ -55,7 +56,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { emailid, password } = req.body;
-  console.log(emailid);
 
   if (!emailid || !password) {
     throw new ApiError(400, "Email and Password both are required");
@@ -68,6 +68,7 @@ const loginUser = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, { emailid }, "User does not exist"));
   }
   const auth = bcrypt.compare(password, user.password);
+
   if (!auth) {
     return res
       .status(200)
@@ -141,14 +142,12 @@ const verifyToken = asyncHandler(async (req, res) => {
       incomingRefreshToken,
       process.env.TOKEN_SECRET
     );
-    console.log(decodedRefreshToken);
 
     const user = await User.findById(decodedRefreshToken.id);
 
-    if (!(user.name)) {
+    if (!user.name) {
       throw new ApiError(401, "Invalid Token");
     }
-    console.log("abcd")
     const { Token: newToken } = await generateTokens(user._id);
     const loggeduser = await User.findById(decodedRefreshToken.id);
     const options = {

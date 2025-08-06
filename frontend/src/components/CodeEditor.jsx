@@ -10,14 +10,13 @@ const languageMap = {
   java: "import java.util.*;\nclass Main {\n  public static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    int a = sc.nextInt();\n    System.out.println(a * 3);\n  }\n}",
 };
 
-const CodeEditor = ({pid}) => {
+const CodeEditor = ({pid, user}) => {
   const [language, setLanguage] = useState("cpp");
   const [code, setCode] = useState(languageMap["cpp"]);
   const [input, setInput] = useState("5");
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
   const textareaRef = useRef(null);
-
   useEffect(() => {
     localStorage.setItem("latest_code", code);
     localStorage.setItem("latest_lang", language);
@@ -102,16 +101,17 @@ const CodeEditor = ({pid}) => {
             whileHover={{ scale: 1.03 }}
             className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-blue-700 transition"
           >
-            {loading ? "Running..." : "▶ Run Code"}
+            {loading ? "Running..." : "Run Code"}
           </motion.button>
-          <motion.button
+          {(user)?<motion.button
             onClick={handleSubmit}
             whileTap={{ scale: 0.95 }}
             whileHover={{ scale: 1.03 }}
             className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-green-700 transition"
           >
-            {loading ? "Submitting..." : "✔ Submit"}
-          </motion.button>
+            {loading ? "Submitting..." : "Submit"}
+          </motion.button>:<></>
+          }
         </div>
       </div>
 

@@ -6,7 +6,13 @@ const userSchema = new mongoose.Schema({
   mobno: String,
   emailid: String,
   password: String,
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
 });
+
 
 userSchema.pre("save", async function () {
   this.password = await bcrypt.hash(this.password, 12);

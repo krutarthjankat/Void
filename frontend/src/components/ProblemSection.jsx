@@ -24,16 +24,16 @@ const ProblemSection = () => {
   }, []);
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4 bg-white dark:bg-[#0f172a] transition-colors duration-300">
       <div className="container mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-white">
+          <h2 className="text-3xl font-bold mb-2 text-gray-900 dark:text-gray-100">
             Practice Problems
           </h2>
         </div>
 
         {loading ? (
-          <p className="text-gray-600 dark:text-gray-400 text-center">
+          <p className="text-gray-700 dark:text-gray-300 text-center">
             Loading...
           </p>
         ) : problems.length > 0 ? (
@@ -44,7 +44,7 @@ const ProblemSection = () => {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-700 dark:text-gray-300">
               No problems found.
             </p>
           </div>

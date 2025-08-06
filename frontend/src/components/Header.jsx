@@ -57,6 +57,14 @@ const Header = ({ user, setUser }) => {
             >
               Contests
             </a>
+            {user?.user?.name === "admin" && (
+              <a
+                href="/create"
+                className="text-gray-700 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-400 transition-colors"
+              >
+                Create Problem
+              </a>
+            )}
           </nav>
 
           <button
@@ -84,7 +92,7 @@ const Header = ({ user, setUser }) => {
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 className="flex items-center space-x-2 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
               >
-                <span>{user.username || "User"}</span>
+                <span>{user?.user?.name || "User"}</span>
                 <svg
                   className="w-4 h-4"
                   fill="currentColor"

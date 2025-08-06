@@ -21,16 +21,17 @@ ${code}
 
 Please:
 1. Review the user's code. Mention any bugs, optimizations, or improvements.
-2. Then, provide a helpful hint to solve the problem more effectively (no direct solutions!).
+2. Then, provide a subtle helpful idea to solve the problem (no direct solutions!).
+3. Talk in second person language. 
 
 Label your response clearly:
-### Review:
+Review:
 <your review>
 
-### Hint:
+Hint:
 <your hint>
 `;
-    console.log(prompt);
+//   console.log(prompt);
 
   try {
     const response = await axios.post(
@@ -51,7 +52,7 @@ Label your response clearly:
     const reply =
       response.data.candidates?.[0]?.content?.parts?.[0]?.text ||
       "No response.";
-    console.log(reply);
+    // console.log(reply);
     res.json({ data: reply });
   } catch (err) {
     console.error("Gemini API error:", err.response?.data || err.message);

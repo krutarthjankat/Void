@@ -4,14 +4,14 @@ import axios from "axios";
 import CodeEditor from "../components/CodeEditor";
 import { baseurl } from "../App";
 
-const ProblemPage = () => {
+const ProblemPage = ({user}) => {
   const { id } = useParams();
   const [problem, setProblem] = useState(null);
   const [submissions, setSubmissions] = useState([]);
   const [activeTab, setActiveTab] = useState("problem");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewResult, setReviewResult] = useState("");
-
+  console.log(user);
   const fetchProblem = async () => {
     try {
       const res = await axios.get(`${baseurl}api/problem/${id}`, {
@@ -77,19 +77,19 @@ const ProblemPage = () => {
   if (!problem) return <div className="p-6">Loading...</div>;
 
   return (
-    <div className="min-h-screen p-4 md:p-6 bg-gray-100">
+    <div className="min-h-screen p-4 md:p-6 bg-gray-100 dark:bg-[#0f172a] transition-colors duration-300">
       <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Left: Tabs and Content */}
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4 overflow-auto max-h-[90vh]">
+        <div className="bg-white dark:bg-[#1e293b] p-6 rounded-lg shadow-md space-y-4 overflow-auto max-h-[90vh]">
           {/* Tabs */}
-          <div className="flex space-x-4 border-b pb-2">
+          <div className="flex space-x-4 border-b dark:border-gray-600 pb-2">
             {["problem", "submissions", "ai"].map((tab) => (
               <button
                 key={tab}
                 className={`px-3 py-1 rounded-t text-sm font-semibold ${
                   activeTab === tab
                     ? "bg-blue-600 text-white"
-                    : "bg-gray-200 text-gray-800"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200"
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -105,19 +105,19 @@ const ProblemPage = () => {
           {/* Tab Contents */}
           {activeTab === "problem" && (
             <>
-              <h1 className="text-2xl font-bold text-blue-700">
+              <h1 className="text-2xl font-bold text-blue-700 dark:text-blue-400">
                 {problem.title}
               </h1>
 
-              <div className="text-gray-700 text-sm">
+              <div className="text-gray-700 dark:text-gray-300 text-sm">
                 <p>{problem.statement}</p>
               </div>
 
               <div>
-                <h2 className="text-md font-semibold mt-4 text-gray-800">
+                <h2 className="text-md font-semibold mt-4 text-gray-800 dark:text-gray-200">
                   Constraints
                 </h2>
-                <ul className="list-disc list-inside text-sm text-gray-600">
+                <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-400">
                   {problem.constraints?.map((c, idx) => (
                     <li key={idx}>{c}</li>
                   ))}
@@ -125,14 +125,14 @@ const ProblemPage = () => {
               </div>
 
               <div>
-                <h2 className="text-md font-semibold mt-4 text-gray-800">
+                <h2 className="text-md font-semibold mt-4 text-gray-800 dark:text-gray-200">
                   Sample Inputs
                 </h2>
                 <div className="space-y-2">
                   {problem.sampleInputs?.map((input, idx) => (
                     <pre
                       key={idx}
-                      className="bg-gray-100 border rounded p-2 text-sm font-mono"
+                      className="bg-gray-100 dark:bg-gray-800 border dark:border-gray-700 rounded p-2 text-sm font-mono text-gray-800 dark:text-gray-100"
                     >
                       {input}
                     </pre>
@@ -141,14 +141,14 @@ const ProblemPage = () => {
               </div>
 
               <div>
-                <h2 className="text-md font-semibold mt-4 text-gray-800">
+                <h2 className="text-md font-semibold mt-4 text-gray-800 dark:text-gray-200">
                   Sample Outputs
                 </h2>
                 <div className="space-y-2">
                   {problem.sampleOutputs?.map((output, idx) => (
                     <pre
                       key={idx}
-                      className="bg-gray-100 border rounded p-2 text-sm font-mono"
+                      className="bg-gray-100 dark:bg-gray-800 border dark:border-gray-700 rounded p-2 text-sm font-mono text-gray-800 dark:text-gray-100"
                     >
                       {output}
                     </pre>
@@ -160,25 +160,27 @@ const ProblemPage = () => {
 
           {activeTab === "submissions" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-700 mb-2">
+              <h2 className="text-xl font-bold text-blue-700 dark:text-blue-400 mb-2">
                 Your Submissions
               </h2>
               {submissions.length === 0 ? (
-                <p className="text-gray-600 text-sm">No submissions yet.</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  No submissions yet.
+                </p>
               ) : (
                 <ul className="space-y-3 text-sm">
                   {submissions.map((sub, idx) => (
                     <li
                       key={idx}
-                      className="border rounded p-3 bg-gray-50 flex flex-col"
+                      className="border dark:border-gray-700 rounded p-3 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-gray-200 flex flex-col"
                     >
                       <div>
                         <strong>Status:</strong>{" "}
                         <span
                           className={`${
                             sub.verdict === "Accepted"
-                              ? "text-green-600"
-                              : "text-red-600"
+                              ? "text-green-600 dark:text-green-400"
+                              : "text-red-600 dark:text-red-400"
                           }`}
                         >
                           {sub.verdict}
@@ -200,7 +202,7 @@ const ProblemPage = () => {
 
           {activeTab === "ai" && (
             <div>
-              <h2 className="text-xl font-bold text-blue-700 mb-4">
+              <h2 className="text-xl font-bold text-blue-700 dark:text-blue-400 mb-4">
                 AI Code Review & Hints
               </h2>
 
@@ -212,9 +214,11 @@ const ProblemPage = () => {
               </button>
 
               {reviewLoading ? (
-                <p className="text-gray-500 mt-4">Reviewing your code...</p>
+                <p className="text-gray-500 dark:text-gray-400 mt-4">
+                  Reviewing your code...
+                </p>
               ) : (
-                <pre className="bg-gray-100 mt-4 p-4 rounded whitespace-pre-wrap text-sm">
+                <pre className="bg-gray-100 dark:bg-gray-800 mt-4 p-4 rounded whitespace-pre-wrap text-sm text-gray-800 dark:text-gray-100">
                   {reviewResult ||
                     "Click 'Generate Review' to get AI feedback and hints."}
                 </pre>
@@ -225,7 +229,7 @@ const ProblemPage = () => {
 
         {/* Right: Code Editor */}
         <div>
-          <CodeEditor pid={id} />
+          <CodeEditor pid={id} user={user} />
         </div>
       </div>
     </div>

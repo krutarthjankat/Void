@@ -52,8 +52,9 @@ export default function SignupForm({ setUser }) {
       },
     });
     try {
-      const res = await axios.post(baseurl + "api/users/signup", form);
-      if (res.data.status === "success") {
+      const res = await axios.post(baseurl + "api/user/register", form);
+      console.log(res.data);
+      if (res.data.success) {
         setUser(res.data.data);
         navigate(`/`);
       } else {

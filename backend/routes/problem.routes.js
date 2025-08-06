@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyJWT } from "../middlewares/auth.middleware.js";
+import { requireAdmin } from "../middlewares/admin.middleware.js";
 import {
   createProblem,
   getProblems,
@@ -9,11 +9,11 @@ import {
 
 const router = Router();
 
-router.route("/create").post(verifyJWT, createProblem);
+router.route("/create").post(requireAdmin, createProblem);
 
 router.route("/getall").get(getProblems);
 
-router.route("/delete").post(verifyJWT, deleteProblem);
+router.route("/delete").post(requireAdmin, deleteProblem);
 
 router.route("/:id").get(getProblemById);
 
