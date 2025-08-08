@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect } from "react";
 import axios from "axios";
-import { baseurl } from "../App.jsx";
 import { motion } from "framer-motion";
 import Loader from "./Loader";
 
@@ -10,7 +9,7 @@ const languageMap = {
   java: "import java.util.*;\nclass Main {\n  public static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    int a = sc.nextInt();\n    System.out.println(a * 3);\n  }\n}",
 };
 
-const CodeEditor = ({pid, user}) => {
+const CodeEditor = ({ pid, user }) => {
   const [language, setLanguage] = useState("cpp");
   const [code, setCode] = useState(languageMap["cpp"]);
   const [input, setInput] = useState("5");
@@ -22,12 +21,11 @@ const CodeEditor = ({pid, user}) => {
     localStorage.setItem("latest_lang", language);
   }, [code, language]);
 
-
   const handleRun = async () => {
     setLoading(true);
     setOutput("");
     try {
-      const res = await axios.post(baseurl + "api/code/run", {
+      const res = await axios.post(import.meta.env.VITE_baseurl + "api/code/run", {
         language,
         code,
         input,
@@ -46,7 +44,7 @@ const CodeEditor = ({pid, user}) => {
     setOutput("");
     try {
       const res = await axios.post(
-        baseurl + "api/submission/submit",
+        import.meta.env.VITE_baseurl + "api/submission/submit",
         {
           pid,
           language,
@@ -56,10 +54,11 @@ const CodeEditor = ({pid, user}) => {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("Token"),
           },
-          withCredentials:true
+          withCredentials: true,
         }
       );
-      setOutput(res.data.result || "Submission Successful!");
+      console.log(res.data.data.verdict);
+      setOutput(res.data.data.verdict || "Submitted");
     } catch (err) {
       const msg = err.response?.data?.errors?.[0] || "Submission Failed!";
       setOutput("Error:\n" + msg);
@@ -103,15 +102,18 @@ const CodeEditor = ({pid, user}) => {
           >
             {loading ? "Running..." : "Run Code"}
           </motion.button>
-          {(user)?<motion.button
-            onClick={handleSubmit}
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.03 }}
-            className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-green-700 transition"
-          >
-            {loading ? "Submitting..." : "Submit"}
-          </motion.button>:<></>
-          }
+          {user ? (
+            <motion.button
+              onClick={handleSubmit}
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.03 }}
+              className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-green-700 transition"
+            >
+              {loading ? "Submitting..." : "Submit"}
+            </motion.button>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
 

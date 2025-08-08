@@ -29,7 +29,6 @@ const generateTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, mobno, emailid, password } = req.body;
-  console.log(req.body);
   if ([name, mobno, emailid, password].some((field) => field?.trim() === "")) {
     throw new ApiError(400, "All fields are required");
   }
@@ -78,7 +77,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { user, Token }, "Login successful"));
+    .json(new ApiResponse(201, { user, Token }, "Login successful"));
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
@@ -93,7 +92,6 @@ const logoutUser = asyncHandler(async (req, res) => {
       new: true,
     }
   );
-  // console.log(user);
 
   const options = {
     // httpOnly : true,
@@ -172,6 +170,39 @@ const verifyToken = asyncHandler(async (req, res) => {
   }
 });
 
+const updateUser = asyncHandler(async (req, res) => {
+  const userId = (req.user._id).toString();
+
+  const { name, emailid, mobno } = req.body;
+
+
+  // Prepare fields to update
+  const updateFields = {};
+  if (name !== undefined) updateFields.name = name;
+  if (emailid !== undefined) updateFields.emailid = emailid;
+  if (mobno !== undefined) updateFields.mobno = mobno;
+
+  if (Object.keys(updateFields).length === 0) {
+    throw new ApiError(400, "No fields provided for update");
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+    new: true,
+    runValidators: true,
+  }).select("-Token");
+
+  const { Token } = await generateTokens(updatedUser._id);
+
+  if (!updatedUser) {
+    throw new ApiError(500, "User update failed");
+  }
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {user:updatedUser,Token} , "User updated successfully"));
+});
+
+
 export {
   registerUser,
   getcurUserdetails,
@@ -179,4 +210,5 @@ export {
   loginUser,
   logoutUser,
   verifyToken,
+  updateUser,
 };

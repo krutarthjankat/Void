@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import CodeEditor from "../components/CodeEditor";
-import { baseurl } from "../App";
 
 const ProblemPage = ({user}) => {
   const { id } = useParams();
@@ -11,10 +10,9 @@ const ProblemPage = ({user}) => {
   const [activeTab, setActiveTab] = useState("problem");
   const [reviewLoading, setReviewLoading] = useState(false);
   const [reviewResult, setReviewResult] = useState("");
-  console.log(user);
   const fetchProblem = async () => {
     try {
-      const res = await axios.get(`${baseurl}api/problem/${id}`, {
+      const res = await axios.get(`${import.meta.env.VITE_baseurl}api/problem/${id}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("Token"),
         },
@@ -27,12 +25,11 @@ const ProblemPage = ({user}) => {
 
   const fetchSubmissions = async () => {
     try {
-      const res = await axios.get(`${baseurl}api/submission/problem/${id}`, {
+      const res = await axios.get(`${import.meta.env.VITE_baseurl}api/submission/problem/${id}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("Token"),
         },
       });
-      console.log(res.data);
       setSubmissions(res.data.data);
     } catch (err) {
       console.error("Failed to load submissions", err);
@@ -49,7 +46,7 @@ const ProblemPage = ({user}) => {
     setReviewResult("");
     try {
       const res = await axios.post(
-        `${baseurl}api/ai/review`,
+        `${import.meta.env.VITE_baseurl}api/ai/review`,
         {
           code: localStorage.getItem("latest_code") || "",
           title: problem.title,
@@ -64,7 +61,6 @@ const ProblemPage = ({user}) => {
           },
         }
       );
-      console.log(res.data);
       setReviewResult(res.data.data);
     } catch (err) {
       console.error("Review error", err);

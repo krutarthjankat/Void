@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { baseurl } from "../App.jsx";
 
 const Submissions = ({ pid }) => {
   const [submissions, setSubmissions] = useState([]);
   console.log(pid);
   useEffect(() => {
     const fetchSubs = async () => {
-      const res = await axios.get(`${baseurl}api/submission/problem/${pid}`);
+      const res = await axios.get(`${import.meta.env.VITE_baseurl}api/submission/problem/${pid}`);
       setSubmissions(res.data.data);
     };
     fetchSubs();

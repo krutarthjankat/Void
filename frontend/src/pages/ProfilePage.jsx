@@ -1,20 +1,41 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
 
-export default function ProfilePage({ user }) {
+export default function ProfilePage({ user, setUser }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState(user);
+
   useEffect(() => {
     setEditedUser(user);
-  }, [user]);
+  }, [user,setUser]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEditedUser((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSave = () => {
-    setIsEditing(false);
-    console.log("Updated user:", editedUser);
+  const handleSave = async () => {    
+    try{
+      const res = await axios.post(
+        import.meta.env.VITE_baseurl + "api/user/update",
+        {
+          name: editedUser.name,
+          mobno: editedUser.mobno,
+          emailid: editedUser.emailid,
+        },
+        {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("Token"),
+          },
+        }
+      );
+      console.log(res.data.data);
+      setUser(res.data.data);
+      setIsEditing(false);
+    }catch(e){
+      console.log(e);
+    }
+    
     // Add API call here if needed
   };
 
@@ -40,7 +61,9 @@ export default function ProfilePage({ user }) {
                 className="w-full p-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             ) : (
-              <p className="text-gray-800 dark:text-gray-200">{user.user.name}</p>
+              <p className="text-gray-800 dark:text-gray-200">
+                {user?.user?.name}
+              </p>
             )}
           </div>
 
@@ -58,7 +81,9 @@ export default function ProfilePage({ user }) {
                 className="w-full p-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             ) : (
-              <p className="text-gray-800 dark:text-gray-200">{user.user.emailid}</p>
+              <p className="text-gray-800 dark:text-gray-200">
+                {user?.user?.emailid}
+              </p>
             )}
           </div>
 
@@ -76,7 +101,9 @@ export default function ProfilePage({ user }) {
                 className="w-full p-2 rounded bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
               />
             ) : (
-              <p className="text-gray-800 dark:text-gray-200">{user.user.mobno}</p>
+              <p className="text-gray-800 dark:text-gray-200">
+                {user?.user?.mobno}
+              </p>
             )}
           </div>
 

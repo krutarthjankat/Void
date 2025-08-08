@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { baseurl } from "../App";
 
 const CreateProblem = () => {
   const [formData, setFormData] = useState({
@@ -40,7 +39,7 @@ const CreateProblem = () => {
     const token = localStorage.getItem("Token"); // ensure you store it on login
     try {
       await axios.post(
-        baseurl+"api/problem/create",
+        import.meta.env.VITE_baseurl+"api/problem/create",
         { ...formData, user: "admin" },
         {
           headers: {

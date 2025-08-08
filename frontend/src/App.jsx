@@ -11,8 +11,6 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import ProblemSection from "./components/ProblemSection";
 import CreateProblem from "./components/CreateProblem";
 
-export const baseurl = "http://localhost:3000/";
-
 function App() {
   const [user, setUser] = useState();
 
@@ -21,7 +19,7 @@ function App() {
       try {
         const token = localStorage.getItem("Token");
         console.log("Bearer " + token);
-        const res = await axios.get(baseurl + "api/user/verify_token", {
+        const res = await axios.get(import.meta.env.VITE_baseurl + "api/user/verify_token", {
           headers: {
             Authorization: "Bearer " + token,
           },
@@ -40,7 +38,7 @@ function App() {
 
   useEffect(() => {
     verifyUser();
-  }, []);
+  }, [setUser]);
 
   return (
     <ThemeProvider>
@@ -68,7 +66,7 @@ function App() {
 
             <Route path="/problem" element={<ProblemSection />} />
             <Route path="/problem/:id" element={<ProblemPage user={user} />} />
-            <Route path="/profile" element={<ProfilePage user={user} />} />
+            <Route path="/profile" element={<ProfilePage user={user} setUser={setUser} />} />
           </Route>
         </Routes>
       </BrowserRouter>

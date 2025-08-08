@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { baseurl } from "../App";
 import axios from "axios";
 import ProblemCard from "./ProblemCard";
 
@@ -10,9 +9,8 @@ const ProblemSection = () => {
   useEffect(() => {
     const fetchProblems = async () => {
       try {
-        const res = await axios.get(baseurl+"api/problem/getall");
-        console.log(res.data.data);
-        setProblems(res.data.data); // Make sure your backend sends the array directly
+        const res = await axios.get(import.meta.env.VITE_baseurl+"api/problem/getall");
+        setProblems(res.data.data);
       } catch (err) {
         console.error("Failed to fetch problems", err);
       } finally {

@@ -1,5 +1,4 @@
 import axios from "axios";
-import { baseurl } from "../App.jsx";
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion, useAnimationControls } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -52,8 +51,7 @@ export default function SignupForm({ setUser }) {
       },
     });
     try {
-      const res = await axios.post(baseurl + "api/user/register", form);
-      console.log(res.data);
+      const res = await axios.post(import.meta.env.VITE_baseurl + "api/user/register", form);
       if (res.data.success) {
         setUser(res.data.data);
         navigate(`/`);

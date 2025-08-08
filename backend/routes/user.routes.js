@@ -7,7 +7,8 @@ import {
   getUserbyID,
   logoutUser,
   loginUser,
-  verifyToken
+  verifyToken,
+  updateUser
 } from "../controllers/user.controller.js";
 
 const router = Router();
@@ -21,6 +22,8 @@ router.route("/verify_token").get(verifyToken);
 router.route("/getuserbyId/:UserID").get(getUserbyID);
 
 router.route("/logout").get(verifyJWT, logoutUser);
+
+router.route("/update").post(verifyJWT, updateUser);
 
 router.route("/get-current-user").get(verifyJWT, getcurUserdetails);
 

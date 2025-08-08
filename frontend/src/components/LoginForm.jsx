@@ -1,4 +1,3 @@
-import { baseurl } from "../App.jsx";
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
@@ -43,12 +42,11 @@ export default function LoginForm({ setUser }) {
   const LoginUser = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(baseurl + "api/user/login", {
+      const res = await axios.post(import.meta.env.VITE_baseurl + "api/user/login", {
         emailid: userForm.uniqueId,
         password: userForm.password,
       });
-      console.log(res.data);
-      if (res.data?.statusCode === 200) {
+      if (res.data?.statusCode === 201) {
         localStorage.setItem("Token", res.data.data.Token);
         setUser(res.data.data);
         navigate(`/`);
@@ -64,10 +62,7 @@ export default function LoginForm({ setUser }) {
       className="flex justify-center items-center w-screen h-screen "
     >
       <AnimatePresence mode="wait">
-        <div
-          className="flex flex-col w-full h-screen p-0 sm:flex-row"
-          // style={{ flexDirection: "column-reverse" }} // Reverses flex direction for smaller screens
-        >
+        <div className="flex flex-col w-full h-screen p-0 sm:flex-row">
           <div className="flex justify-end w-full h-full">
             {/* left Side (Logo) */}
             <motion.div
@@ -108,7 +103,7 @@ export default function LoginForm({ setUser }) {
                     <form onSubmit={LoginUser}>
                       <div className="flex flex-col mb-6">
                         <label
-                          for="email"
+                          htmlFor="email"
                           className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600 px-2 md:px-0"
                         >
                           Email ID:
@@ -118,9 +113,9 @@ export default function LoginForm({ setUser }) {
                             <svg
                               className="h-6 w-6"
                               fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
@@ -143,7 +138,7 @@ export default function LoginForm({ setUser }) {
                       </div>
                       <div className="flex flex-col mb-6">
                         <label
-                          for="password"
+                          htmlFor="password"
                           className="mb-1 text-xs sm:text-sm tracking-wide text-gray-600 px-2 md:px-0 "
                         >
                           Password:
@@ -155,9 +150,9 @@ export default function LoginForm({ setUser }) {
                               <svg
                                 className="h-6 w-6"
                                 fill="none"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth="2"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
                               >
@@ -206,9 +201,9 @@ export default function LoginForm({ setUser }) {
                             <svg
                               className="h-6 w-6"
                               fill="none"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
                               viewBox="0 0 24 24"
                               stroke="currentColor"
                             >
@@ -225,9 +220,9 @@ export default function LoginForm({ setUser }) {
                         <svg
                           className="h-6 w-6"
                           fill="none"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
                         >
