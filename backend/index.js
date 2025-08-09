@@ -21,10 +21,12 @@ if (!fs.existsSync(tempDir)) {
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: ["https://void-drab-iota.vercel.app", "http://localhost:5173/"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
 app.use("/api/user", userRoute);
 
 app.use("/api/problem", probRoute);
@@ -48,7 +50,6 @@ app.use("/api/ai", aiReviewRoutes);
 //     errors: [err?.message || String(err)],
 //   });
 // });
-
 
 app.get("/", (req, res) => {
   res.send("Sab badhiya");
