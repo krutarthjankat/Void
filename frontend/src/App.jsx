@@ -10,6 +10,7 @@ import axios from "axios";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import ProblemSection from "./components/ProblemSection";
 import CreateProblem from "./components/CreateProblem";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   const [user, setUser] = useState();
@@ -50,7 +51,7 @@ function App() {
 
           {/* Routes with header/footer */}
           <Route element={<MainLayout user={user} setUser={setUser} />}>
-            <Route path="/" element={<ProblemSection />} />
+            <Route path="/" element={<LandingPage />} />
             <Route
               path="/create"
               element={
@@ -63,10 +64,13 @@ function App() {
                 )
               }
             />
-
-            <Route path="/problem" element={<ProblemSection />} />
+            <Route path="/home" element={<LandingPage />} />
+            <Route path="/problems" element={<ProblemSection />} />
             <Route path="/problem/:id" element={<ProblemPage user={user} />} />
-            <Route path="/profile" element={<ProfilePage user={user} setUser={setUser} />} />
+            <Route
+              path="/profile"
+              element={<ProfilePage user={user} setUser={setUser} />}
+            />
           </Route>
         </Routes>
       </BrowserRouter>

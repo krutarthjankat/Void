@@ -46,7 +46,7 @@ const Header = ({ user, setUser }) => {
         <div className="flex items-center space-x-4">
           <nav className="hidden md:flex items-center space-x-6">
             <a
-              href="/"
+              href="/problems"
               className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
               Problems
@@ -72,16 +72,31 @@ const Header = ({ user, setUser }) => {
             className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
           >
             {theme === "light" ? (
-              <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              // Sun icon (visible in light mode, to switch to dark mode)
+              <svg
+                className="h-6 w-6 text-yellow-500"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <circle cx="12" cy="12" r="5" fill="currentColor" />
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+                />
               </svg>
             ) : (
+              // Moon icon (visible in dark mode, to switch to light mode)
               <svg
-                className="h-5 w-5 text-white"
+                className="h-6 w-6 text-gray-200"
+                xmlns="http://www.w3.org/2000/svg"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path d="M12 2v2m0 16v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M2 12h2m16 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z" />
               </svg>
             )}
           </button>
